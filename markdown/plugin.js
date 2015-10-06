@@ -5,116 +5,115 @@ tinymce.PluginManager.add('markdown', function(editor, url) {
         tooltip: 'Markdown',
         icon: false,
         onclick: function() {
-            // Open window
-            tinyMCE.activeEditor.setContent(toMarkdown(tinyMCE.activeEditor.getContent()), {format : 'raw'});
-           
-        }
-    });
-    
-    // Adds a menu item to the tools menu
-    editor.addMenuItem('markdown', {
-        text: 'Markdown',
-        context: 'format',
-        onclick: function() {
-            // Open window with a specific url
-            tinyMCE.activeEditor.setContent(toMarkdown(tinyMCE.activeEditor.getContent()), {format : 'raw'});
-           
-        }
-    });
-});
+		    tinyMCE.activeEditor.setContent("<pre>"+toMarkdown(tinyMCE.activeEditor.getContent()+"</pre>"), {format : 'raw'});
+		   
+		}
+	    });
+	    
+	    // Adds a menu item to the tools menu
+	    editor.addMenuItem('markdown', {
+		text: 'Markdown',
+		context: 'format',
+		onclick: function() {
+		    // Open window with a specific url
+		    tinyMCE.activeEditor.setContent("<pre>"+toMarkdown(tinyMCE.activeEditor.getContent()+"</pre>"), {format : 'raw'});
+		   
+		}
+	    });
+	});
 
 
 
-//JS FROM to-markdown - an HTML to Markdown converter
+	//JS FROM to-markdown - an HTML to Markdown converter
 
-/*
- * to-markdown - an HTML to Markdown converter
- *
- * Copyright 2011, Dom Christie
- * Licenced under the MIT licence
- *
- */
+	/*
+	 * to-markdown - an HTML to Markdown converter
+	 *
+	 * Copyright 2011, Dom Christie
+	 * Licenced under the MIT licence
+	 *
+	 */
 
-var toMarkdown = function(string) {
-  
-  var ELEMENTS = [
-    {
-      patterns: 'p',
-      replacement: function(str, attrs, innerHTML) {
-        return innerHTML ? '\n\n' + innerHTML + '\n' : '';
-      }
-    },
-    {
-      patterns: 'br',
-      type: 'void',
-      replacement: '\n'
-    },
-    {
-      patterns: 'h([1-6])',
-      replacement: function(str, hLevel, attrs, innerHTML) {
-        var hPrefix = '';
-        for(var i = 0; i < hLevel; i++) {
-          hPrefix += '#';
-        }
-        return '\n\n' + hPrefix + ' ' + innerHTML + '\n';
-      }
-    },
-    {
-      patterns: 'hr',
-      type: 'void',
-      replacement: '\n\n* * *\n'
-    },
-    {
-      patterns: 'a',
-      replacement: function(str, attrs, innerHTML) {
-        var href = attrs.match(attrRegExp('href')),
-            title = attrs.match(attrRegExp('title'));
-        return href ? '[' + innerHTML + ']' + '(' + href[1] + (title && title[1] ? ' "' + title[1] + '"' : '') + ')' : str;
-      }
-    },
-    {
-      patterns: ['b', 'strong'],
-      replacement: function(str, attrs, innerHTML) {
-        return innerHTML ? '**' + innerHTML + '**' : '';
-      }
-    },
-    {
-      patterns: ['i', 'em'],
-      replacement: function(str, attrs, innerHTML) {
-        return innerHTML ? '_' + innerHTML + '_' : '';
-      }
-    },
-    {
-      patterns: 'code',
-      replacement: function(str, attrs, innerHTML) {
-        return innerHTML ? '`' + innerHTML + '`' : '';
-      }
-    },
-    {
-      patterns: 'img',
-      type: 'void',
-      replacement: function(str, attrs, innerHTML) {
-        var src = attrs.match(attrRegExp('src')),
-            alt = attrs.match(attrRegExp('alt')),
-            title = attrs.match(attrRegExp('title'));
-        return '![' + (alt && alt[1] ? alt[1] : '') + ']' + '(' + src[1] + (title && title[1] ? ' "' + title[1] + '"' : '') + ')';
-      }
-    }
-  ];
-  
-  for(var i = 0, len = ELEMENTS.length; i < len; i++) {
-    if(typeof ELEMENTS[i].patterns === 'string') {
-      string = replaceEls(string, { tag: ELEMENTS[i].patterns, replacement: ELEMENTS[i].replacement, type:  ELEMENTS[i].type });
-    }
-    else {
-      for(var j = 0, pLen = ELEMENTS[i].patterns.length; j < pLen; j++) {
-        string = replaceEls(string, { tag: ELEMENTS[i].patterns[j], replacement: ELEMENTS[i].replacement, type:  ELEMENTS[i].type });
-      }
-    }
-  }
-  
-  function replaceEls(html, elProperties) {
-    var pattern = elProperties.type === 'void' ? '<' + elProperties.tag + '\\b([^>]*)\\/?>' : '<' + elProperties.tag + '\\b([^>]*)>([\\s\\S]*?)<\\/' + elProperties.tag + '>',
+	var toMarkdown = function(string) {
+	  
+	  var ELEMENTS = [
+	    {
+	      patterns: 'p',
+	      replacement: function(str, attrs, innerHTML) {
+		return innerHTML ? '\n\n' + innerHTML + '\n' : '';
+	      }
+	    },
+	    {
+	      patterns: 'br',
+	      type: 'void',
+	      replacement: '\n'
+	    },
+	    {
+	      patterns: 'h([1-6])',
+	      replacement: function(str, hLevel, attrs, innerHTML) {
+		var hPrefix = '';
+		for(var i = 0; i < hLevel; i++) {
+		  hPrefix += '#';
+		}
+		return '\n\n' + hPrefix + ' ' + innerHTML + '\n';
+	      }
+	    },
+	    {
+	      patterns: 'hr',
+	      type: 'void',
+	      replacement: '\n\n* * *\n'
+	    },
+	    {
+	      patterns: 'a',
+	      replacement: function(str, attrs, innerHTML) {
+		var href = attrs.match(attrRegExp('href')),
+		    title = attrs.match(attrRegExp('title'));
+		return href ? '[' + innerHTML + ']' + '(' + href[1] + (title && title[1] ? ' "' + title[1] + '"' : '') + ')' : str;
+	      }
+	    },
+	    {
+	      patterns: ['b', 'strong'],
+	      replacement: function(str, attrs, innerHTML) {
+		return innerHTML ? '**' + innerHTML + '**' : '';
+	      }
+	    },
+	    {
+	      patterns: ['i', 'em'],
+	      replacement: function(str, attrs, innerHTML) {
+		return innerHTML ? '_' + innerHTML + '_' : '';
+	      }
+	    },
+	    {
+	      patterns: 'code',
+	      replacement: function(str, attrs, innerHTML) {
+		return innerHTML ? '`' + innerHTML + '`' : '';
+	      }
+	    },
+	    {
+	      patterns: 'img',
+	      type: 'void',
+	      replacement: function(str, attrs, innerHTML) {
+		var src = attrs.match(attrRegExp('src')),
+		    alt = attrs.match(attrRegExp('alt')),
+		    title = attrs.match(attrRegExp('title'));
+		return '![' + (alt && alt[1] ? alt[1] : '') + ']' + '(' + src[1] + (title && title[1] ? ' "' + title[1] + '"' : '') + ')';
+	      }
+	    }
+	  ];
+	  
+	  for(var i = 0, len = ELEMENTS.length; i < len; i++) {
+	    if(typeof ELEMENTS[i].patterns === 'string') {
+	      string = replaceEls(string, { tag: ELEMENTS[i].patterns, replacement: ELEMENTS[i].replacement, type:  ELEMENTS[i].type });
+	    }
+	    else {
+	      for(var j = 0, pLen = ELEMENTS[i].patterns.length; j < pLen; j++) {
+		string = replaceEls(string, { tag: ELEMENTS[i].patterns[j], replacement: ELEMENTS[i].replacement, type:  ELEMENTS[i].type });
+	      }
+	    }
+	  }
+	  
+	  function replaceEls(html, elProperties) {
+	    var pattern = elProperties.type === 'void' ? '<' + elProperties.tag + '\\b([^>]*)\\/?>' : '<' + elProperties.tag + '\\b([^>]*)>([\\s\\S]*?)<\\/' + elProperties.tag + '>',
         regex = new RegExp(pattern, 'gi'),
         markdown = '';
     if(typeof elProperties.replacement === 'string') {
